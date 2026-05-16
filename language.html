@@ -1,0 +1,1028 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Language Guide · Ashworth Adventure</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@400;500;700&family=Caveat:wght@600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --teal: #1F6F73;
+      --teal-dark: #134B4F;
+      --teal-hover: #175e62;
+      --sage: #9CAF88;
+      --gold: #C2A878;
+      --gold-light: rgba(194,168,120,0.15);
+      --bg: #0b1a1c;
+      --bg-card: rgba(255,255,255,0.04);
+      --bg-card-hover: rgba(31,111,115,0.12);
+      --border: rgba(31,111,115,0.28);
+      --border-light: rgba(255,255,255,0.08);
+      --text: #f0ece4;
+      --text-muted: #8a9e96;
+      --white: #fff;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      background: linear-gradient(135deg, #0a1a1c 0%, #0d2224 60%, #091518 100%);
+      border-bottom: 2px solid var(--teal);
+      padding: 28px 20px 24px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(31,111,115,0.18) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .header-back {
+      position: absolute;
+      top: 18px; left: 18px;
+      font-size: 13px;
+      color: var(--text-muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+    .header-back:hover { color: var(--gold); }
+    .header-eyebrow {
+      font-family: 'Caveat', cursive;
+      font-size: 15px;
+      color: var(--gold);
+      margin-bottom: 6px;
+      letter-spacing: 0.05em;
+    }
+    .header-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(28px, 6vw, 46px);
+      font-weight: 900;
+      color: var(--white);
+      line-height: 1.1;
+      margin-bottom: 6px;
+    }
+    .header-sub {
+      font-size: 13px;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    /* ── STOP PILLS ── */
+    .stop-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+      padding: 20px 16px 4px;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .stop-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 16px;
+      border-radius: 100px;
+      border: 1.5px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-muted);
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .stop-pill:hover { border-color: var(--teal); color: var(--white); }
+    .stop-pill.active {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: var(--white);
+      font-weight: 700;
+    }
+    .stop-pill img { width: 16px; height: 16px; filter: brightness(0) invert(1); }
+
+    /* ── CITY CARD ── */
+    .city-card {
+      max-width: 680px;
+      margin: 16px auto 0;
+      padding: 0 16px;
+    }
+    .city-card-inner {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--teal);
+      border-radius: 14px;
+      padding: 18px 20px;
+      transition: border-color 0.4s;
+    }
+    .city-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .city-icon { width: 36px; height: 36px; filter: brightness(0) invert(0.8) sepia(1) hue-rotate(120deg); }
+    .city-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--white);
+    }
+    .city-region { font-size: 12px; color: var(--text-muted); margin-top: 1px; }
+    .city-wisdom {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+    .spotlight {
+      background: var(--gold-light);
+      border-left: 3px solid var(--gold);
+      border-radius: 10px;
+      padding: 12px 14px;
+    }
+    .spotlight-label {
+      font-size: 10px;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .spotlight-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .spotlight-phrase {
+      font-family: 'Playfair Display', serif;
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 3px;
+    }
+    .spotlight-en { font-size: 13px; color: var(--gold); margin-bottom: 4px; }
+    .spotlight-tip { font-size: 11px; color: var(--text-muted); font-style: italic; }
+
+    /* ── SPEAK BUTTON ── */
+    .btn-speak {
+      background: var(--gold-light);
+      border: 1px solid rgba(194,168,120,0.35);
+      border-radius: 8px;
+      color: var(--gold);
+      padding: 7px 10px;
+      cursor: pointer;
+      font-size: 16px;
+      flex-shrink: 0;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-speak:hover { background: rgba(194,168,120,0.25); }
+
+    /* ── SPEED CONTROLS ── */
+    .speed-bar {
+      max-width: 680px;
+      margin: 12px auto 0;
+      padding: 0 16px;
+    }
+    .speed-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .speed-label { font-size: 11px; color: var(--text-muted); }
+    .speed-btn {
+      padding: 4px 12px;
+      border-radius: 100px;
+      border: 1px solid var(--border-light);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .speed-btn.active {
+      background: var(--gold-light);
+      border-color: var(--gold);
+      color: var(--gold);
+      font-weight: 700;
+    }
+
+    /* ── CATEGORY TABS ── */
+    .cat-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding: 16px 16px 4px;
+      justify-content: center;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+    .cat-tab {
+      padding: 6px 14px;
+      border-radius: 100px;
+      border: 1px solid var(--border-light);
+      background: transparent;
+      color: var(--text-muted);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .cat-tab:hover { border-color: var(--teal); color: var(--white); }
+    .cat-tab.active {
+      background: var(--bg-card-hover);
+      border-color: var(--teal);
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* ── MODE SWITCHER ── */
+    .mode-switcher {
+      display: flex;
+      gap: 6px;
+      justify-content: center;
+      padding: 12px 16px 0;
+    }
+    .mode-btn {
+      padding: 8px 20px;
+      border-radius: 10px;
+      border: none;
+      background: rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+      font-weight: 500;
+    }
+    .mode-btn:hover { background: rgba(255,255,255,0.08); color: var(--white); }
+    .mode-btn.active {
+      background: var(--teal);
+      color: var(--white);
+      font-weight: 700;
+    }
+
+    /* ── PHRASE LIST (browse) ── */
+    .phrase-list {
+      max-width: 680px;
+      margin: 14px auto 0;
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+    .phrase-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 13px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .phrase-card:hover { border-color: var(--teal); background: var(--bg-card-hover); }
+    .phrase-card.revealed { border-color: rgba(31,111,115,0.5); background: var(--bg-card-hover); }
+    .phrase-card-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    .phrase-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 3px;
+    }
+    .phrase-hint { font-size: 10px; color: rgba(138,158,150,0.5); }
+    .phrase-en { font-size: 13px; color: var(--gold); margin-bottom: 4px; }
+    .phrase-tip { font-size: 11px; color: var(--text-muted); font-style: italic; }
+    .phrase-card-actions { display: flex; gap: 6px; flex-shrink: 0; }
+
+    /* ── FLASHCARD ── */
+    .flashcard-wrap {
+      max-width: 540px;
+      margin: 20px auto 0;
+      padding: 0 16px;
+      text-align: center;
+    }
+    .flashcard-counter { font-size: 12px; color: var(--text-muted); margin-bottom: 14px; }
+    .flashcard {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      padding: 48px 28px;
+      cursor: pointer;
+      min-height: 200px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s;
+      margin-bottom: 20px;
+    }
+    .flashcard.revealed {
+      border-color: var(--teal);
+      background: rgba(31,111,115,0.1);
+    }
+    .flashcard-lang {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .flashcard-phrase {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 4vw, 26px);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .flashcard-tap { font-size: 11px; color: var(--text-muted); font-style: italic; }
+    .flashcard-divider {
+      width: 50px; height: 2px;
+      background: var(--gold);
+      margin: 12px auto;
+    }
+    .flashcard-en {
+      font-size: 18px;
+      color: var(--gold);
+      margin-bottom: 8px;
+    }
+    .flashcard-tip { font-size: 12px; color: var(--text-muted); font-style: italic; max-width: 300px; }
+    .flashcard-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; }
+    .btn-nav {
+      padding: 9px 20px;
+      border-radius: 10px;
+      border: 1px solid var(--border-light);
+      background: rgba(255,255,255,0.05);
+      color: var(--text-muted);
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .btn-nav:hover { border-color: var(--teal); color: var(--white); }
+    .btn-nav.primary {
+      background: var(--teal);
+      border-color: var(--teal);
+      color: var(--white);
+      font-weight: 700;
+    }
+    .btn-nav.primary:hover { background: var(--teal-hover); }
+
+    /* ── QUIZ ── */
+    .quiz-wrap {
+      max-width: 540px;
+      margin: 20px auto 0;
+      padding: 0 16px;
+      text-align: center;
+    }
+    .quiz-score { font-size: 12px; color: var(--text-muted); margin-bottom: 12px; }
+    .quiz-question {
+      background: var(--bg-card);
+      border: 2px solid var(--border);
+      border-radius: 18px;
+      padding: 30px 22px;
+      margin-bottom: 14px;
+    }
+    .quiz-prompt {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+    }
+    .quiz-phrase {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(18px, 4vw, 24px);
+      font-weight: 700;
+      color: var(--white);
+      margin-bottom: 10px;
+    }
+    .quiz-options { display: flex; flex-direction: column; gap: 8px; margin-bottom: 14px; }
+    .quiz-option {
+      padding: 12px 16px;
+      border-radius: 11px;
+      border: 1px solid var(--border-light);
+      background: rgba(255,255,255,0.04);
+      color: var(--text);
+      font-size: 14px;
+      text-align: left;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'DM Sans', sans-serif;
+    }
+    .quiz-option:hover:not(:disabled) { border-color: var(--teal); background: var(--bg-card-hover); }
+    .quiz-option.correct { background: rgba(50,180,80,0.15); border-color: #40c060; color: #80ffaa; }
+    .quiz-option.wrong { background: rgba(200,50,50,0.15); border-color: #c03030; color: #ff8888; }
+    .quiz-option:disabled { cursor: default; }
+
+    /* ── FOOTER TIP ── */
+    .footer-tip {
+      max-width: 680px;
+      margin: 24px auto 60px;
+      padding: 0 16px;
+    }
+    .footer-tip-inner {
+      background: var(--gold-light);
+      border: 1px solid rgba(194,168,120,0.2);
+      border-left: 3px solid var(--gold);
+      border-radius: 13px;
+      padding: 14px 18px;
+    }
+    .footer-tip-label {
+      font-size: 10px;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .footer-tip-text { font-size: 13px; color: var(--text-muted); line-height: 1.75; }
+
+    .content-area { padding-bottom: 40px; }
+
+    @media (max-width: 600px) {
+      .stop-pill { font-size: 12px; padding: 6px 12px; }
+      .mode-btn { padding: 7px 14px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="page-header">
+  <a href="index.html" class="header-back">← Back to Trip</a>
+  <div class="header-eyebrow">Ashworth European Adventure · June 2026</div>
+  <h1 class="header-title">Language Guide</h1>
+  <p class="header-sub">French &amp; Italian · Phrases, Flashcards &amp; Quiz</p>
+</header>
+
+<!-- STOP SELECTOR -->
+<nav class="stop-nav" id="stopNav"></nav>
+
+<!-- CITY CARD -->
+<div class="city-card">
+  <div class="city-card-inner" id="cityCard"></div>
+</div>
+
+<!-- SPEED CONTROLS -->
+<div class="speed-bar">
+  <div class="speed-row">
+    <span class="speed-label">Playback speed:</span>
+    <button class="speed-btn" data-rate="0.1">🐢 Very Slow</button>
+    <button class="speed-btn active" data-rate="0.5">🚶 Slow</button>
+    <button class="speed-btn" data-rate="0.9">🏃 Normal</button>
+  </div>
+</div>
+
+<!-- CATEGORY TABS -->
+<div class="cat-tabs" id="catTabs"></div>
+
+<!-- MODE SWITCHER -->
+<div class="mode-switcher">
+  <button class="mode-btn active" data-mode="browse">📖 Browse</button>
+  <button class="mode-btn" data-mode="flashcard">🃏 Flashcards</button>
+  <button class="mode-btn" data-mode="quiz">🎯 Quiz</button>
+</div>
+
+<!-- CONTENT AREA -->
+<div class="content-area" id="contentArea"></div>
+
+<!-- FOOTER TIP -->
+<div class="footer-tip" id="footerTip"></div>
+
+<script>
+const STOPS = [
+  {
+    id: "paris", label: "Paris", region: "France · Île-de-France", icon: "icons/icons8-eiffel-tower-50.png", lang: "fr", langLabel: "French",
+    wisdom: "Paris is magnificent and a little proud of it — but a little French goes a very long way. Locals genuinely warm up when you try, even imperfectly. Always greet with 'Bonjour' before anything else; skipping it reads as rude. Museum passes save hours of queuing. Café culture is sacred — no rushing, and lingering over coffee is expected.",
+    spotlight: { phrase: "Bonjour ! Un café, s'il vous plaît.", en: "Hello! A coffee, please.", tip: "Lead every interaction with Bonjour — it unlocks Parisian warmth like nothing else" },
+  },
+  {
+    id: "naples", label: "Naples", region: "Italy · Campania", icon: "icons/icons8-pizza-50.png", lang: "it", langLabel: "Italian",
+    wisdom: "Naples is loud, passionate, and electric — the birthplace of pizza. The locals speak fast and expressively; don't be shy about asking them to slow down. The city can feel chaotic but it's deeply warm once you engage. Watch your belongings on the metro, and never leave a table without trying the Neapolitan espresso.",
+    spotlight: { phrase: "Una pizza margherita, per favore", en: "A margherita pizza, please", tip: "You're in the city that invented pizza — this is the only order that matters on day one" },
+  },
+  {
+    id: "pompeii", label: "Pompeii", region: "Italy · Archaeological Site", icon: "icons/icons8-archeology-50.png", lang: "it", langLabel: "Italian",
+    wisdom: "Pompeii is vast — over 160 acres of excavated Roman city. Wear comfortable shoes and bring water; there's very little shade. An audio guide is worth every euro. The site opens at 9am and gets crowded by 11am, so arrive early. Many signs are in Italian only, so a few key phrases will help.",
+    spotlight: { phrase: "Dov'è l'ingresso principale?", en: "Where is the main entrance?", tip: "There are multiple gates — the main one is Porta Marina. Ask early to avoid confusion" },
+  },
+  {
+    id: "rome", label: "Rome", region: "Italy · Lazio", icon: "icons/icons8-colosseum-48.png", lang: "it", langLabel: "Italian",
+    wisdom: "Rome rewards those who wander. Book the Colosseum, Vatican Museums, and Borghese Gallery in advance — lines without reservations can be 2–3 hours. The city has rules about fountains and monuments: no swimming, no sitting on steps in some areas. Gelato from a gelateria (not a bar) is always the correct move.",
+    spotlight: { phrase: "Ho una prenotazione", en: "I have a reservation", tip: "Say this confidently at every museum entrance — it's your golden ticket past the line" },
+  },
+  {
+    id: "venice", label: "Venice", region: "Italy · Veneto", icon: "icons/icons8-gondola-50.png", lang: "it", langLabel: "Italian",
+    wisdom: "Venice has no cars — it's all on foot and by boat. The vaporetto (water bus) is your main transit; buy a 24hr or 48hr pass. Get lost on purpose in the side streets away from the Rialto — that's where the real Venice hides. Dining near San Marco is a tourist trap; walk 10 minutes in any direction for honest food at half the price.",
+    spotlight: { phrase: "Un biglietto per il vaporetto, per favore", en: "A vaporetto ticket, please", tip: "The vaporetto is Venice's water bus — Line 1 goes the full Grand Canal and is worth the ride" },
+  },
+];
+
+const STOP_PHRASES = {
+  paris: [
+    { phrase: "Bonjour !", en: "Hello!", tip: "Always say this first — it's non-negotiable in France" },
+    { phrase: "S'il vous plaît", en: "Please", tip: "Attach this to any request and you're already doing great" },
+    { phrase: "Merci beaucoup", en: "Thank you very much", tip: "Pronounced 'mehr-see boh-KOO'" },
+    { phrase: "Où est...?", en: "Where is...?", tip: "Add any destination — Où est la Tour Eiffel?" },
+    { phrase: "L'addition, s'il vous plaît", en: "The bill, please", tip: "Waiters won't bring it until you ask — this is intentional" },
+    { phrase: "Une table pour deux, s'il vous plaît", en: "A table for two, please", tip: "Change deux for your party size — trois, quatre, etc." },
+    { phrase: "Qu'est-ce que vous recommandez?", en: "What do you recommend?", tip: "Parisians love being asked — it opens a real conversation" },
+    { phrase: "Je voudrais un café crème", en: "I'd like a café crème", tip: "A café crème is the Parisian milky coffee — order it at the bar to save money" },
+    { phrase: "Parlez-vous anglais?", en: "Do you speak English?", tip: "Ask politely — most younger Parisians will, and appreciate that you asked in French first" },
+    { phrase: "Un billet pour le musée, s'il vous plaît", en: "One museum ticket, please", tip: "Book Louvre and Musée d'Orsay online in advance — lines are brutal without reservations" },
+    { phrase: "C'est délicieux !", en: "It's delicious!", tip: "Say this to any chef or waiter and watch them light up" },
+    { phrase: "Excusez-moi", en: "Excuse me", tip: "Use to get attention or to pass someone — very versatile" },
+  ],
+  naples: [
+    { phrase: "Una pizza margherita, per favore", en: "A margherita pizza, please", tip: "The original — buffalo mozzarella, San Marzano tomatoes, fresh basil" },
+    { phrase: "Dov'è la stazione centrale?", en: "Where is the central train station?", tip: "Napoli Centrale is your hub for Pompeii and Rome connections" },
+    { phrase: "Un caffè al banco, per favore", en: "A coffee at the bar, please", tip: "Standing at the bar (al banco) is cheaper and more authentic" },
+    { phrase: "Quanto costa il biglietto per Pompei?", en: "How much is the ticket to Pompeii?", tip: "Trains to Pompeii run from Napoli Centrale on the Circumvesuviana line" },
+    { phrase: "È autentico?", en: "Is it authentic?", tip: "Ask at any pizzeria — Neapolitans are fiercely proud of the real thing" },
+    { phrase: "Attenzione ai borseggiatori!", en: "Watch out for pickpockets!", tip: "Tourist areas can be targeted, especially on the metro" },
+    { phrase: "Dov'è il centro storico?", en: "Where is the historic center?", tip: "Naples' UNESCO-listed old town is one of the most atmospheric in Europe" },
+    { phrase: "Un limoncello, per favore", en: "A limoncello, please", tip: "Made from Amalfi coast lemons — always served ice cold as a digestivo" },
+  ],
+  pompeii: [
+    { phrase: "Dov'è l'ingresso principale?", en: "Where is the main entrance?", tip: "Porta Marina is the main gate — follow signs from the train station" },
+    { phrase: "Vorrei una guida audio", en: "I'd like an audio guide", tip: "Worth every euro — the site is enormous and context is everything" },
+    { phrase: "A che ora chiude il sito?", en: "What time does the site close?", tip: "Hours vary by season — check when you enter so you plan your time" },
+    { phrase: "Dov'è la Casa dei Vettii?", en: "Where is the House of the Vettii?", tip: "One of Pompeii's most preserved homes — a must-see" },
+    { phrase: "Posso comprare una mappa?", en: "Can I buy a map?", tip: "Essential — Pompeii is 160 acres and easy to get disoriented" },
+    { phrase: "C'è un posto dove mangiare qui?", en: "Is there somewhere to eat here?", tip: "There's a café inside the site — but bring snacks and water" },
+    { phrase: "Che caldo fa oggi!", en: "It's so hot today!", tip: "Pompeii has very little shade — start early and carry water" },
+    { phrase: "È vero che è morto per il vulcano?", en: "Is it true they died from the volcano?", tip: "A great conversation starter with any guide — the science is fascinating" },
+  ],
+  rome: [
+    { phrase: "Ho una prenotazione", en: "I have a reservation", tip: "Say this at every museum — it skips you past the regular line" },
+    { phrase: "Dov'è il Colosseo?", en: "Where is the Colosseum?", tip: "It's impossible to miss, but asking locals is a great opener" },
+    { phrase: "Quando apre il Vaticano?", en: "When does the Vatican open?", tip: "Vatican Museums open at 9am — book well in advance online" },
+    { phrase: "Posso fare una foto?", en: "Can I take a photo?", tip: "Always ask inside churches and museums — some rooms prohibit it" },
+    { phrase: "Dov'è la fontana di Trevi?", en: "Where is the Trevi Fountain?", tip: "Go early morning or late evening to avoid the worst crowds" },
+    { phrase: "Un gelato al pistacchio, per favore", en: "A pistachio gelato, please", tip: "Real gelaterias display gelato in metal lidded containers — avoid the piled-high neon colors" },
+    { phrase: "È vietato sedersi qui?", en: "Is it forbidden to sit here?", tip: "Rome has rules about sitting on monument steps — check signs" },
+    { phrase: "Quanto tempo ci vuole a piedi?", en: "How long does it take on foot?", tip: "Rome's historic center is very walkable — most sights are 20–30 min apart" },
+  ],
+  venice: [
+    { phrase: "Un biglietto per il vaporetto, per favore", en: "A vaporetto ticket, please", tip: "Line 1 runs the full Grand Canal — sit at the front or back for the best views" },
+    { phrase: "Dov'è Piazza San Marco?", en: "Where is St. Mark's Square?", tip: "Everything points toward San Marco — follow the yellow signs" },
+    { phrase: "Acqua alta oggi?", en: "High water today?", tip: "Venice floods seasonally — check forecasts and bring waterproof boots just in case" },
+    { phrase: "Dov'è il ponte di Rialto?", en: "Where is the Rialto Bridge?", tip: "The most famous bridge — also near a great morning market" },
+    { phrase: "Una gondola, quanto costa?", en: "A gondola — how much does it cost?", tip: "Official rate is €80–100 for 30 min — it's fixed, don't try to negotiate" },
+    { phrase: "Mi sono perso/a", en: "I'm lost", tip: "In Venice this happens to everyone — follow signs to San Marco or Ferrovia (train station)" },
+    { phrase: "Dove posso trovare un buon bacaro?", en: "Where can I find a good bacaro?", tip: "A bacaro is a Venetian wine bar with cicchetti (small bites) — the locals' version of aperitivo" },
+    { phrase: "C'è un vaporetto per Murano?", en: "Is there a vaporetto to Murano?", tip: "Murano is 40 min by vaporetto — famous for glass-blowing, worth a half-day trip" },
+  ],
+};
+
+const CATEGORIES = [
+  {
+    id: "greetings", icon: "👋", label: "Greetings",
+    fr: [
+      { phrase: "Bonjour", en: "Good morning / Hello", tip: "Use until around 6pm" },
+      { phrase: "Bonsoir", en: "Good evening", tip: "Use from late afternoon onward" },
+      { phrase: "Au revoir", en: "Goodbye", tip: "Formal farewell" },
+      { phrase: "S'il vous plaît", en: "Please", tip: "Always gets a warmer response" },
+      { phrase: "Merci beaucoup", en: "Thank you very much", tip: "Pronounced 'mehr-see boh-KOO'" },
+      { phrase: "De rien", en: "You're welcome", tip: "Literally 'of nothing' — same idea as Italian 'prego'" },
+      { phrase: "Excusez-moi", en: "Excuse me", tip: "To get attention or squeeze past someone" },
+      { phrase: "Comment allez-vous?", en: "How are you?", tip: "Formal — use with strangers and shopkeepers" },
+      { phrase: "Parlez-vous anglais?", en: "Do you speak English?", tip: "Always ask in French first — it makes a big difference" },
+      { phrase: "Je ne comprends pas", en: "I don't understand", tip: "Follow with 'Pouvez-vous répéter lentement?' — can you repeat slowly?" },
+    ],
+    it: [
+      { phrase: "Ciao!", en: "Hi! / Bye!", tip: "Casual — use with friends and peers" },
+      { phrase: "Buongiorno", en: "Good morning / Good day", tip: "Use until early afternoon" },
+      { phrase: "Buonasera", en: "Good evening", tip: "Use from late afternoon onward" },
+      { phrase: "Arrivederci", en: "Goodbye", tip: "Formal farewell" },
+      { phrase: "Per favore", en: "Please", tip: "Essential politeness" },
+      { phrase: "Grazie mille", en: "Thank you very much", tip: "More warmth than 'grazie'" },
+      { phrase: "Prego", en: "You're welcome", tip: "Also means 'please go ahead'" },
+      { phrase: "Come stai?", en: "How are you?", tip: "Informal" },
+      { phrase: "Parla inglese?", en: "Do you speak English?", tip: "Most urban Italians will" },
+      { phrase: "Non capisco", en: "I don't understand", tip: "Follow up with 'Può ripetere?' — can you repeat?" },
+    ],
+  },
+  {
+    id: "food", icon: "🍽", label: "Food & Drink",
+    fr: [
+      { phrase: "Une table pour deux, s'il vous plaît", en: "A table for two, please", tip: "" },
+      { phrase: "La carte, s'il vous plaît", en: "The menu, please", tip: "La carte = à la carte; le menu = fixed price" },
+      { phrase: "Qu'est-ce que vous recommandez?", en: "What do you recommend?", tip: "Always a great opener" },
+      { phrase: "L'addition, s'il vous plaît", en: "The bill, please", tip: "They won't bring it until you ask" },
+      { phrase: "Un café crème, s'il vous plaît", en: "A coffee with milk, please", tip: "Ordered at the bar (comptoir) it's cheaper" },
+      { phrase: "Un verre de vin rouge / blanc", en: "A glass of red / white wine", tip: "House wine is always drinkable in France" },
+      { phrase: "C'est délicieux !", en: "It's delicious!", tip: "Guaranteed to make the waiter smile" },
+      { phrase: "Je suis végétarien/ne", en: "I'm vegetarian", tip: "Add -ne at the end if you're a woman" },
+      { phrase: "Sans gluten, s'il vous plaît", en: "Gluten-free, please", tip: "Increasingly understood in Paris" },
+      { phrase: "L'eau du robinet, s'il vous plaît", en: "Tap water, please", tip: "Free and safe — otherwise you'll get a paid bottle" },
+    ],
+    it: [
+      { phrase: "Un tavolo per due, per favore", en: "A table for two, please", tip: "" },
+      { phrase: "Posso vedere il menù?", en: "Can I see the menu?", tip: "" },
+      { phrase: "Cosa consiglia?", en: "What do you recommend?", tip: "Locals love this question!" },
+      { phrase: "Il conto, per favore", en: "The bill, please", tip: "You'll need to ask — they won't rush you" },
+      { phrase: "Un caffè, per favore", en: "A coffee, please", tip: "Espresso is the default" },
+      { phrase: "Acqua naturale o frizzante?", en: "Still or sparkling water?", tip: "You'll hear this a lot" },
+      { phrase: "Buonissimo!", en: "Delicious!", tip: "Say it and watch the waiter beam" },
+      { phrase: "Sono vegetariano/a", en: "I'm vegetarian", tip: "Menus in Italy are often meat-heavy — state upfront" },
+      { phrase: "Senza glutine", en: "Gluten-free", tip: "" },
+      { phrase: "È incluso il servizio?", en: "Is service included?", tip: "Tip isn't always expected in Italy" },
+    ],
+  },
+  {
+    id: "directions", icon: "🗺", label: "Getting Around",
+    fr: [
+      { phrase: "Où est...?", en: "Where is...?", tip: "Add any destination after" },
+      { phrase: "À gauche / À droite", en: "To the left / To the right", tip: "Core navigation" },
+      { phrase: "Tout droit", en: "Straight ahead", tip: "Pronounced 'too drwah'" },
+      { phrase: "C'est loin?", en: "Is it far?", tip: "They may answer in minutes walking" },
+      { phrase: "Un ticket de métro, s'il vous plaît", en: "A metro ticket, please", tip: "Buy a carnet (10-pack) — it saves money" },
+      { phrase: "Je suis perdu/e", en: "I'm lost", tip: "Perdu (m) / Perdue (f)" },
+      { phrase: "À quelle heure part le train?", en: "What time does the train leave?", tip: "Essential for any rail travel" },
+      { phrase: "Taxi, s'il vous plaît", en: "Taxi, please", tip: "Or use the Uber app — very reliable in Paris" },
+    ],
+    it: [
+      { phrase: "Dov'è...?", en: "Where is...?", tip: "" },
+      { phrase: "A sinistra / A destra", en: "To the left / To the right", tip: "" },
+      { phrase: "Dritto", en: "Straight ahead", tip: "Pronounced 'dreet-toh'" },
+      { phrase: "Quanto dista?", en: "How far is it?", tip: "" },
+      { phrase: "Un biglietto per..., per favore", en: "One ticket to..., please", tip: "" },
+      { phrase: "A che ora parte il treno?", en: "What time does the train leave?", tip: "" },
+      { phrase: "Mi sono perso/a", en: "I'm lost", tip: "They will almost always help!" },
+      { phrase: "Taxi!", en: "Taxi!", tip: "Same word — wave your hand" },
+    ],
+  },
+  {
+    id: "hotel", icon: "🏨", label: "Hotel",
+    fr: [
+      { phrase: "J'ai une réservation", en: "I have a reservation", tip: "Always lead with this at check-in" },
+      { phrase: "À quelle heure est le check-out?", en: "What time is check-out?", tip: "Usually noon" },
+      { phrase: "Avez-vous le Wi-Fi?", en: "Do you have Wi-Fi?", tip: "Universally understood" },
+      { phrase: "La chambre n'est pas propre", en: "The room isn't clean", tip: "" },
+      { phrase: "Pouvez-vous appeler un taxi?", en: "Can you call a taxi?", tip: "Ask at the front desk" },
+      { phrase: "Le petit-déjeuner est inclus?", en: "Is breakfast included?", tip: "French hotel breakfast is usually €10–20 extra" },
+      { phrase: "Où est l'ascenseur?", en: "Where is the elevator?", tip: "" },
+    ],
+    it: [
+      { phrase: "Ho una prenotazione", en: "I have a reservation", tip: "Always lead with this" },
+      { phrase: "A che ora è il check-out?", en: "What time is check-out?", tip: "Usually noon in Italy" },
+      { phrase: "C'è il Wi-Fi?", en: "Is there Wi-Fi?", tip: "" },
+      { phrase: "La camera non è pulita", en: "The room isn't clean", tip: "" },
+      { phrase: "Può chiamarmi un taxi?", en: "Can you call me a taxi?", tip: "" },
+      { phrase: "La colazione è inclusa?", en: "Is breakfast included?", tip: "Italian breakfasts are often light" },
+      { phrase: "Dov'è l'ascensore?", en: "Where is the elevator?", tip: "" },
+    ],
+  },
+  {
+    id: "emergencies", icon: "🚨", label: "Emergencies",
+    fr: [
+      { phrase: "Au secours !", en: "Help!", tip: "Say it loudly" },
+      { phrase: "Appelez un médecin !", en: "Call a doctor!", tip: "" },
+      { phrase: "Appelez la police !", en: "Call the police!", tip: "" },
+      { phrase: "J'ai besoin d'un hôpital", en: "I need a hospital", tip: "" },
+      { phrase: "On m'a volé mon portefeuille", en: "My wallet was stolen", tip: "File a report at the nearest police station" },
+      { phrase: "Je ne me sens pas bien", en: "I don't feel well", tip: "" },
+      { phrase: "Où est la pharmacie?", en: "Where is the pharmacy?", tip: "Green cross = pharmacie" },
+      { phrase: "J'ai perdu mon passeport", en: "I lost my passport", tip: "Go to your consulate immediately" },
+    ],
+    it: [
+      { phrase: "Aiuto!", en: "Help!", tip: "Say it loudly" },
+      { phrase: "Chiami un medico!", en: "Call a doctor!", tip: "" },
+      { phrase: "Chiami la polizia!", en: "Call the police!", tip: "" },
+      { phrase: "Ho bisogno di un ospedale", en: "I need a hospital", tip: "" },
+      { phrase: "Mi hanno rubato il portafoglio", en: "My wallet was stolen", tip: "File a report immediately" },
+      { phrase: "Non mi sento bene", en: "I don't feel well", tip: "" },
+      { phrase: "Dove è la farmacia?", en: "Where is the pharmacy?", tip: "Green cross = farmacia" },
+      { phrase: "Ho perso il passaporto", en: "I lost my passport", tip: "Go to your consulate" },
+    ],
+  },
+];
+
+// ── STATE ──
+let activeStop = STOPS[0];
+let activeCat = "stop";
+let activeMode = "browse";
+let speechRate = 0.5;
+let revealedCards = new Set();
+let flashcardIndex = 0;
+let flashcardRevealed = false;
+let quizState = null;
+let quizScore = { correct: 0, total: 0 };
+
+function getPhrases() {
+  if (activeCat === "stop") return STOP_PHRASES[activeStop.id] || [];
+  const cat = CATEGORIES.find(c => c.id === activeCat);
+  if (!cat) return [];
+  return activeStop.lang === "fr" ? cat.fr : cat.it;
+}
+
+function speak(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = activeStop.lang === "fr" ? "fr-FR" : "it-IT";
+  u.rate = speechRate;
+  window.speechSynthesis.speak(u);
+}
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+// ── RENDER STOP NAV ──
+function renderStopNav() {
+  const nav = document.getElementById("stopNav");
+  nav.innerHTML = STOPS.map(s => `
+    <button class="stop-pill ${s.id === activeStop.id ? "active" : ""}" data-stop="${s.id}">
+      <img src="${s.icon}" alt="${s.label}"> ${s.label}
+    </button>
+  `).join("");
+  nav.querySelectorAll(".stop-pill").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeStop = STOPS.find(s => s.id === btn.dataset.stop);
+      activeCat = "stop";
+      resetModeState();
+      renderAll();
+    });
+  });
+}
+
+// ── RENDER CITY CARD ──
+function renderCityCard() {
+  const card = document.getElementById("cityCard");
+  const s = activeStop;
+  card.innerHTML = `
+    <div class="city-card-header">
+      <img class="city-icon" src="${s.icon}" alt="${s.label}">
+      <div>
+        <div class="city-name">${s.label}</div>
+        <div class="city-region">${s.region} · ${s.langLabel}</div>
+      </div>
+    </div>
+    <p class="city-wisdom">${s.wisdom}</p>
+    <div class="spotlight">
+      <div class="spotlight-label">📌 Phrase of the moment</div>
+      <div class="spotlight-row">
+        <div>
+          <div class="spotlight-phrase">${s.spotlight.phrase}</div>
+          <div class="spotlight-en">${s.spotlight.en}</div>
+          <div class="spotlight-tip">💡 ${s.spotlight.tip}</div>
+        </div>
+        <button class="btn-speak" data-speak="${s.spotlight.phrase}">🔊</button>
+      </div>
+    </div>
+  `;
+  card.querySelector("[data-speak]").addEventListener("click", e => {
+    e.stopPropagation();
+    speak(e.currentTarget.dataset.speak);
+  });
+}
+
+// ── RENDER CAT TABS ──
+function renderCatTabs() {
+  const tabs = document.getElementById("catTabs");
+  const stopTab = { id: "stop", icon: "", label: `${activeStop.label} Phrases` };
+  const all = [stopTab, ...CATEGORIES];
+  tabs.innerHTML = all.map(c => `
+    <button class="cat-tab ${c.id === activeCat ? "active" : ""}" data-cat="${c.id}">
+      ${c.icon ? c.icon + " " : ""}${c.label}
+    </button>
+  `).join("");
+  tabs.querySelectorAll(".cat-tab").forEach(btn => {
+    btn.addEventListener("click", () => {
+      activeCat = btn.dataset.cat;
+      resetModeState();
+      renderContent();
+      renderCatTabs();
+    });
+  });
+}
+
+// ── RENDER BROWSE ──
+function renderBrowse() {
+  const phrases = getPhrases();
+  return `<div class="phrase-list">${phrases.map((p, i) => `
+    <div class="phrase-card ${revealedCards.has(i) ? "revealed" : ""}" data-index="${i}">
+      <div class="phrase-card-row">
+        <div style="flex:1">
+          <div class="phrase-text">${p.phrase}</div>
+          ${revealedCards.has(i) ? `
+            <div class="phrase-en">${p.en}</div>
+            ${p.tip ? `<div class="phrase-tip">💡 ${p.tip}</div>` : ""}
+          ` : `<div class="phrase-hint">tap to reveal</div>`}
+        </div>
+        <div class="phrase-card-actions">
+          <button class="btn-speak" data-speak="${p.phrase.replace(/"/g, '&quot;')}">🔊</button>
+        </div>
+      </div>
+    </div>
+  `).join("")}</div>`;
+}
+
+// ── RENDER FLASHCARD ──
+function renderFlashcard() {
+  const phrases = getPhrases();
+  if (!phrases.length) return `<div style="text-align:center;padding:40px;color:var(--text-muted)">No phrases available.</div>`;
+  const p = phrases[flashcardIndex];
+  const langLabel = activeStop.lang === "fr" ? "Français" : "Italiano";
+  return `<div class="flashcard-wrap">
+    <div class="flashcard-counter">Card ${flashcardIndex + 1} of ${phrases.length}</div>
+    <div class="flashcard ${flashcardRevealed ? "revealed" : ""}" id="flashcardEl">
+      <div class="flashcard-lang">${langLabel}</div>
+      <div class="flashcard-phrase">${p.phrase}</div>
+      ${flashcardRevealed ? `
+        <div class="flashcard-divider"></div>
+        <div class="flashcard-en">${p.en}</div>
+        ${p.tip ? `<div class="flashcard-tip">💡 ${p.tip}</div>` : ""}
+      ` : `<div class="flashcard-tap">tap to reveal</div>`}
+    </div>
+    <div class="flashcard-controls">
+      <button class="btn-speak" data-speak="${p.phrase.replace(/"/g, '&quot;')}">🔊 Hear It</button>
+      <button class="btn-nav" id="fcPrev">← Prev</button>
+      <button class="btn-nav primary" id="fcNext">Next →</button>
+    </div>
+  </div>`;
+}
+
+// ── RENDER QUIZ ──
+function buildQuiz() {
+  const phrases = getPhrases();
+  if (phrases.length < 4) return;
+  const shuffled = shuffle(phrases);
+  const question = shuffled[0];
+  const others = shuffle(phrases.filter(p => p.phrase !== question.phrase)).slice(0, 3);
+  quizState = { question, options: shuffle([question, ...others]), selected: null };
+}
+
+function renderQuiz() {
+  const phrases = getPhrases();
+  if (phrases.length < 4) {
+    return `<div style="text-align:center;padding:40px;color:var(--text-muted);font-style:italic">Not enough phrases for a quiz — try Browse or Flashcards.</div>`;
+  }
+  if (!quizState) buildQuiz();
+  const q = quizState;
+  return `<div class="quiz-wrap">
+    <div class="quiz-score">Score: ${quizScore.correct} / ${quizScore.total}</div>
+    <div class="quiz-question">
+      <div class="quiz-prompt">What does this mean?</div>
+      <div class="quiz-phrase">${q.question.phrase}</div>
+      <button class="btn-speak" style="margin-top:4px" data-speak="${q.question.phrase.replace(/"/g, '&quot;')}">🔊</button>
+    </div>
+    <div class="quiz-options">
+      ${q.options.map((opt, i) => {
+        const isCorrect = opt.phrase === q.question.phrase;
+        const isSelected = q.selected === i;
+        let cls = "";
+        if (q.selected !== null) {
+          if (isCorrect) cls = "correct";
+          else if (isSelected) cls = "wrong";
+        }
+        const suffix = q.selected !== null ? (isCorrect ? " ✓" : isSelected ? " ✗" : "") : "";
+        return `<button class="quiz-option ${cls}" data-qi="${i}" ${q.selected !== null ? "disabled" : ""}>${opt.en}${suffix}</button>`;
+      }).join("")}
+    </div>
+    ${q.selected !== null ? `<button class="btn-nav primary" id="quizNext">Next Question →</button>` : ""}
+  </div>`;
+}
+
+// ── RENDER FOOTER TIP ──
+function renderFooterTip() {
+  const ft = document.getElementById("footerTip");
+  const isFr = activeStop.lang === "fr";
+  ft.innerHTML = `<div class="footer-tip-inner">
+    <div class="footer-tip-label">${isFr ? "You've Got This" : "Your French Will Help in Italy Too"}</div>
+    <p class="footer-tip-text">${isFr
+      ? "You took 4 years of French — this is your moment! Don't second-guess yourself. Even rusty French spoken with confidence will earn you genuine warmth from Parisians. Allez-y !"
+      : "Italian and French share Latin roots — grazie echoes grâce, buongiorno mirrors bonjour, and per favore maps to s'il vous plaît. Trust your instincts and tap any city above to explore. Buon viaggio!"
+    }</p>
+  </div>`;
+}
+
+// ── RENDER CONTENT ──
+function renderContent() {
+  const area = document.getElementById("contentArea");
+  if (activeMode === "browse") area.innerHTML = renderBrowse();
+  else if (activeMode === "flashcard") area.innerHTML = renderFlashcard();
+  else area.innerHTML = renderQuiz();
+  bindContentEvents();
+}
+
+function bindContentEvents() {
+  // Browse: card click + speak
+  document.querySelectorAll(".phrase-card").forEach(card => {
+    card.addEventListener("click", () => {
+      const i = parseInt(card.dataset.index);
+      if (revealedCards.has(i)) revealedCards.delete(i);
+      else revealedCards.add(i);
+      renderContent();
+    });
+  });
+
+  // All speak buttons
+  document.querySelectorAll("[data-speak]").forEach(btn => {
+    btn.addEventListener("click", e => {
+      e.stopPropagation();
+      speak(e.currentTarget.dataset.speak);
+    });
+  });
+
+  // Flashcard
+  const fcEl = document.getElementById("flashcardEl");
+  if (fcEl) {
+    fcEl.addEventListener("click", () => {
+      flashcardRevealed = !flashcardRevealed;
+      renderContent();
+    });
+  }
+  const fcPrev = document.getElementById("fcPrev");
+  const fcNext = document.getElementById("fcNext");
+  if (fcPrev) fcPrev.addEventListener("click", () => {
+    const phrases = getPhrases();
+    flashcardIndex = Math.max(0, flashcardIndex - 1);
+    flashcardRevealed = false;
+    renderContent();
+  });
+  if (fcNext) fcNext.addEventListener("click", () => {
+    const phrases = getPhrases();
+    flashcardIndex = Math.min(phrases.length - 1, flashcardIndex + 1);
+    flashcardRevealed = false;
+    renderContent();
+  });
+
+  // Quiz options
+  document.querySelectorAll(".quiz-option").forEach(btn => {
+    btn.addEventListener("click", () => {
+      if (quizState.selected !== null) return;
+      const i = parseInt(btn.dataset.qi);
+      const isCorrect = quizState.options[i].phrase === quizState.question.phrase;
+      quizState.selected = i;
+      quizScore.correct += isCorrect ? 1 : 0;
+      quizScore.total += 1;
+      renderContent();
+    });
+  });
+  const quizNext = document.getElementById("quizNext");
+  if (quizNext) quizNext.addEventListener("click", () => {
+    buildQuiz();
+    renderContent();
+  });
+}
+
+function resetModeState() {
+  revealedCards = new Set();
+  flashcardIndex = 0;
+  flashcardRevealed = false;
+  quizState = null;
+}
+
+function renderAll() {
+  renderStopNav();
+  renderCityCard();
+  renderCatTabs();
+  renderContent();
+  renderFooterTip();
+}
+
+// ── SPEED BUTTONS ──
+document.querySelectorAll(".speed-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    speechRate = parseFloat(btn.dataset.rate);
+    document.querySelectorAll(".speed-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+  });
+});
+
+// ── MODE BUTTONS ──
+document.querySelectorAll(".mode-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    activeMode = btn.dataset.mode;
+    resetModeState();
+    document.querySelectorAll(".mode-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    renderContent();
+  });
+});
+
+// ── INIT ──
+renderAll();
+</script>
+</body>
+</html>
