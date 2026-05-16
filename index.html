@@ -777,49 +777,91 @@
   <a class="tool-btn" href="https://claude.ai" target="_blank">Made with Claude →</a>
 </footer>
 
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 <script>
-  let ideas = JSON.parse(localStorage.getItem('ashworth-ideas') || '[]');
-  let votes = JSON.parse(localStorage.getItem('ashworth-votes') || '{}');
-  function save() {
-    localStorage.setItem('ashworth-ideas', JSON.stringify(ideas));
-    localStorage.setItem('ashworth-votes', JSON.stringify(votes));
+  // ── Firebase setup ──
+  firebase.initializeApp({
+    apiKey: "AIzaSyC4SSeV87mmAp5bijykiQUXuZDnuV_hcSs",
+    authDomain: "ashworth-adventure.firebaseapp.com",
+    databaseURL: "https://ashworth-adventure-default-rtdb.firebaseio.com",
+    projectId: "ashworth-adventure",
+    storageBucket: "ashworth-adventure.firebasestorage.app",
+    messagingSenderId: "870103207076",
+    appId: "1:870103207076:web:cecf324e95e9c90bc56a31"
+  });
+  const ideasRef = firebase.database().ref('ideas');
+
+  // ── Per-device vote tracking ──
+  let deviceId = localStorage.getItem('aw-device');
+  if (!deviceId) {
+    deviceId = Math.random().toString(36).slice(2) + Date.now().toString(36);
+    localStorage.setItem('aw-device', deviceId);
   }
+  let myVotes = JSON.parse(localStorage.getItem('aw-votes') || '{}');
+  function saveVotes() { localStorage.setItem('aw-votes', JSON.stringify(myVotes)); }
+
+  // ── Helpers ──
   function esc(s) {
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  function renderIdeas() {
+
+  // ── Render ──
+  function renderIdeas(snapshot) {
     const list = document.getElementById('ideasList');
-    if (!ideas.length) { list.innerHTML = '<div class="empty-ideas">No ideas yet — be the first to add one! ✨</div>'; return; }
-    list.innerHTML = ideas.map((idea, i) => `
+    const raw = snapshot.val();
+    if (!raw) {
+      list.innerHTML = '<div class="empty-ideas">No ideas yet — be the first to add one! ✨</div>';
+      return;
+    }
+    const sorted = Object.entries(raw)
+      .map(([id, d]) => ({ id, ...d }))
+      .sort((a, b) => (b.votes || 0) - (a.votes || 0) || (b.ts || 0) - (a.ts || 0));
+    list.innerHTML = sorted.map(idea => `
       <div class="idea-card">
-        <button class="vote-btn ${votes[i] ? 'voted' : ''}" onclick="vote(${i})">
-          <span class="vote-count">${idea.votes}</span>
+        <button class="vote-btn ${myVotes[idea.id] ? 'voted' : ''}" onclick="vote('${idea.id}')">
+          <span class="vote-count">${idea.votes || 0}</span>
           <span class="vote-arrow">▲</span>
         </button>
         <div class="idea-body">
           <div class="idea-text">${esc(idea.text)}</div>
-          <div class="idea-meta"><span>${esc(idea.who)}</span><span class="idea-city-tag">${esc(idea.city)}</span></div>
+          <div class="idea-meta">
+            <span>${esc(idea.who)}</span>
+            <span class="idea-city-tag">${esc(idea.city)}</span>
+          </div>
         </div>
       </div>`).join('');
   }
+
+  // ── Real-time listener ──
+  ideasRef.on('value', renderIdeas);
+
+  // ── Submit ──
   function addIdea() {
     const who = document.getElementById('ideaWho').value;
     const text = document.getElementById('ideaText').value.trim();
     const city = document.getElementById('ideaCity').value;
     if (!who || !text) { alert('Tell us who you are and your idea!'); return; }
-    ideas.unshift({ who, text, city, votes: 1 });
-    const newVotes = { 0: true };
-    Object.keys(votes).forEach(k => { newVotes[parseInt(k)+1] = votes[k]; });
-    votes = newVotes;
-    document.getElementById('ideaText').value = '';
-    save(); renderIdeas();
+    const btn = document.querySelector('.idea-submit');
+    btn.disabled = true; btn.textContent = 'Adding…';
+    const ref = ideasRef.push();
+    ref.set({ who, text, city, votes: 1, ts: firebase.database.ServerValue.TIMESTAMP })
+      .then(() => {
+        myVotes[ref.key] = true;
+        saveVotes();
+        document.getElementById('ideaText').value = '';
+      })
+      .catch(() => alert('Could not save — check your connection and try again.'))
+      .finally(() => { btn.disabled = false; btn.textContent = 'Add Idea'; });
   }
-  function vote(i) {
-    votes[i] = !votes[i];
-    ideas[i].votes += votes[i] ? 1 : -1;
-    save(); renderIdeas();
+
+  // ── Vote ──
+  function vote(ideaId) {
+    const hasVoted = !!myVotes[ideaId];
+    myVotes[ideaId] = !hasVoted;
+    saveVotes();
+    ideasRef.child(ideaId).child('votes').transaction(n => (n || 0) + (hasVoted ? -1 : 1));
   }
-  renderIdeas();
 </script>
 </body>
 </html>
