@@ -222,6 +222,20 @@
       color: var(--gold);
       font-weight: 700;
     }
+    .voice-row { margin-top: 8px; align-items: center; }
+    .voice-select {
+      background: var(--bg-card);
+      border: 1px solid var(--border-light);
+      border-radius: 100px;
+      color: var(--text-muted);
+      font-size: 11px;
+      font-family: 'DM Sans', sans-serif;
+      padding: 4px 12px;
+      cursor: pointer;
+      outline: none;
+      max-width: 240px;
+    }
+    .voice-select:focus { border-color: var(--teal); color: var(--white); }
 
     /* ── CATEGORY TABS ── */
     .cat-tabs {
@@ -490,6 +504,10 @@
     <button class="speed-btn active" data-rate="0.5">🚶 Slow</button>
     <button class="speed-btn" data-rate="0.9">🏃 Normal</button>
   </div>
+  <div class="speed-row voice-row">
+    <span class="speed-label">Voice:</span>
+    <select id="voiceSelect" class="voice-select"><option>Loading…</option></select>
+  </div>
 </div>
 
 <!-- CATEGORY TABS -->
@@ -723,6 +741,7 @@ let activeStop = STOPS[0];
 let activeCat = "stop";
 let activeMode = "browse";
 let speechRate = 0.5;
+let selectedVoice = null;
 let revealedCards = new Set();
 let flashcardIndex = 0;
 let flashcardRevealed = false;
@@ -736,12 +755,34 @@ function getPhrases() {
   return activeStop.lang === "fr" ? cat.fr : cat.it;
 }
 
+function populateVoices() {
+  const sel = document.getElementById("voiceSelect");
+  if (!sel) return;
+  const lang = activeStop.lang === "fr" ? "fr" : "it";
+  const all = window.speechSynthesis.getVoices();
+  const matching = all.filter(v => v.lang.toLowerCase().startsWith(lang));
+  if (!matching.length) {
+    sel.innerHTML = '<option value="">No voices found</option>';
+    selectedVoice = null;
+    return;
+  }
+  const prev = selectedVoice ? selectedVoice.name : null;
+  sel.innerHTML = matching.map((v, i) =>
+    `<option value="${i}">${v.name}${v.localService ? " ●" : ""}</option>`
+  ).join("");
+  // Restore previous selection if same language, else pick first
+  const restored = prev ? matching.findIndex(v => v.name === prev) : -1;
+  sel.selectedIndex = restored >= 0 ? restored : 0;
+  selectedVoice = matching[sel.selectedIndex];
+}
+
 function speak(text) {
   if (!window.speechSynthesis) return;
   window.speechSynthesis.cancel();
   const u = new SpeechSynthesisUtterance(text);
   u.lang = activeStop.lang === "fr" ? "fr-FR" : "it-IT";
   u.rate = speechRate;
+  if (selectedVoice) u.voice = selectedVoice;
   window.speechSynthesis.speak(u);
 }
 
@@ -761,6 +802,7 @@ function renderStopNav() {
       activeCat = "stop";
       resetModeState();
       renderAll();
+      populateVoices();
     });
   });
 }
@@ -1009,6 +1051,18 @@ document.querySelectorAll(".speed-btn").forEach(btn => {
     btn.classList.add("active");
   });
 });
+
+// ── VOICE PICKER ──
+document.getElementById("voiceSelect").addEventListener("change", e => {
+  const lang = activeStop.lang === "fr" ? "fr" : "it";
+  const matching = window.speechSynthesis.getVoices().filter(v => v.lang.toLowerCase().startsWith(lang));
+  selectedVoice = matching[parseInt(e.target.value)] ?? null;
+});
+// Voices load async — populate when ready and on stop change
+if (window.speechSynthesis) {
+  window.speechSynthesis.addEventListener("voiceschanged", populateVoices);
+  populateVoices();
+}
 
 // ── MODE BUTTONS ──
 document.querySelectorAll(".mode-btn").forEach(btn => {
