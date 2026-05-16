@@ -127,7 +127,7 @@
   .day-dot { width: 42px; height: 42px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; position: relative; z-index: 1; margin-top: 20px; border: 2px solid var(--white); box-shadow: 0 0 0 2px currentColor; }
   .day-dot img { width: 22px; height: 22px; filter: brightness(0) invert(1); }
   .tag-icon { width: 14px; height: 14px; vertical-align: middle; margin-right: 3px; }
-  .day-content { flex: 1; padding: 20px 0 32px; border-bottom: 1px solid var(--grey-light); }
+  .day-content { flex: 1; min-width: 0; padding: 20px 0 32px; border-bottom: 1px solid var(--grey-light); }
   .day-block:last-child .day-content { border-bottom: none; }
   .day-date { font-size: 11px; font-weight: 600; letter-spacing: 0.2em; text-transform: uppercase; color: var(--grey-mid); margin-bottom: 4px; }
   .day-title { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; margin-bottom: 10px; line-height: 1.2; color: var(--teal-deep); }
@@ -248,10 +248,18 @@
   @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(6px); } }
 
   @media (max-width: 600px) {
+    .section { padding: 48px 16px; }
+    .city-header { padding: 40px 16px 28px; }
     .timeline::before { left: 16px; }
-    .day-dot { width: 34px; height: 34px; font-size: 14px; }
+    .day-block { gap: 14px; }
+    .day-dot { width: 34px; height: 34px; }
+    .day-dot img { width: 18px; height: 18px; }
+    .day-title { font-size: 20px; }
+    .apt-photo { max-width: 100%; }
+    .gallery-img { height: 150px; }
     .idea-form { flex-direction: column; }
-    .idea-who, .idea-city, .idea-input, .idea-submit { width: 100%; }
+    .idea-who, .idea-city, .idea-input, .idea-submit { width: 100%; min-width: 0; }
+    .city-name-display { display: none; }
   }
 
   .day-gallery {
@@ -262,6 +270,7 @@
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     padding: 14px 0 4px;
+    width: 100%;
   }
   .day-gallery::-webkit-scrollbar { display: none; }
   .gallery-img {
